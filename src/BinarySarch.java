@@ -29,14 +29,17 @@ public class BinarySarch {
     private static void find(List<Integer> list, int numberToFind) {
         Collections.sort(list);
         int l = 0;
-        int h = list.size();
+        int h = list.size()-1;
         int mid;
         int noOfIterations = 0;
         while(true){
             noOfIterations++;
             mid = l+(h-l)/2;
+            draw(l, mid, h, list);
+
+            System.out.println("");
             if (list.get(mid)==numberToFind){
-                System.out.println("Found: "+list.get(mid));
+                System.out.println("Found: " + list.get(mid));
                 break;
             } else if (list.get(mid)>numberToFind){
                 h = mid;
@@ -48,8 +51,68 @@ public class BinarySarch {
                 break;
             }
         }
-        System.out.println("Expected complexity log(n): "+Math.log(list.size())/Math.log(2));
-        System.out.println("No of iterations: "+noOfIterations);
+        System.out.println("Worst-case complexity log(n): "+Math.log(list.size())/Math.log(2));
+        System.out.println("No of iterations: " + noOfIterations);
+
+    }
+
+    private static void draw(int l, int mid, int h, List<Integer> list) {
+
+        int leftSpace = 0;
+        int middleSpace = 0;
+        int rightSpace = 0;
+
+        for (int i=0; i<list.size(); i++) {
+            System.out.print(" " + list.get(i) + " ");
+            if (i<l){
+                leftSpace += (int)Math.log10(list.get(i))+3;
+            } else if (i<mid){
+                middleSpace += (int)Math.log10(list.get(i))+3;
+            } else if (i<h){
+                rightSpace += (int)Math.log10(list.get(i))+3;
+            }
+        }
+
+        System.out.println();
+        drawArrows(leftSpace,middleSpace,rightSpace,'^');
+        drawArrows(leftSpace,middleSpace,rightSpace,'|');
+        drawArrows(leftSpace,middleSpace,rightSpace,'.');
+
+
+
+
+
+    }
+
+    public static void drawArrows(int leftSpace, int middleSpace, int rightSpace, char sign){
+
+        if (sign == '^' || sign == '|'){
+            for (int i=0; i<leftSpace; i++){
+                System.out.print(" ");
+            }
+            System.out.print(" "+sign+" ");
+            for (int i=0; i<middleSpace-3; i++){
+                System.out.print(" ");
+            }
+            System.out.print(" "+sign+" ");
+            for (int i=0; i<rightSpace-3; i++){
+                System.out.print(" ");
+            }
+            System.out.println(" "+sign+" ");
+        } else {
+            for (int i=0; i<leftSpace; i++){
+                System.out.print(" ");
+            }
+            System.out.print(" l ");
+            for (int i=0; i<middleSpace-3; i++){
+                System.out.print(" ");
+            }
+            System.out.print("mid");
+            for (int i=0; i<rightSpace-3; i++){
+                System.out.print(" ");
+            }
+            System.out.println(" h ");
+        }
 
     }
 
